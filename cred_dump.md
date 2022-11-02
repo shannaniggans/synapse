@@ -4,9 +4,11 @@
 Create the noe for the source URL
 [ inet:urlfile=(<URL_HERE>, <SHA256_HERE>) ]
 
-python -m synapse.tools.storm cell:///vertex/storage
 
+Drop into a Strom shell
+`python -m synapse.tools.storm cell:///vertex/storage`
 
+Add the url node
 ```
 storm> [ inet:urlfile=(hxxps://cdn-129.anonfiles.com/kbj2L0E7y8/df4b79d3-1667268564/austra
 lia.txt, 913e56ef839936e7b0ccdf1b802a16ea5fa68a0b4d97f97c69668e5e8190d8fc) ]
@@ -18,3 +20,6 @@ inet:urlfile=('hxxps://cdn-129.anonfiles.com/kbj2L0E7y8/df4b79d3-1667268564/aust
 complete. 1 nodes in 1148 ms (0/sec).
 storm>
 ```
+
+Pipe the file into synapse using the storm config.
+`python -m synapse.tools.csvtool --csv-header --cortex cell:///vertex/storage cred_dump.storm australia.txt`
