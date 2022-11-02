@@ -1,0 +1,16 @@
+for $row in $rows {
+    
+    ($email, $passwd) = $row.0.split(":", 1)
+    
+    // normalize the email address so when we use it
+    // to generate a GUID we don't get tripped up by
+    // little things like FQDN case
+
+    ($ok, $email) = $lib.trycast(inet:email, $email)
+    if (not $ok) { $lib.warn(`Invalid email: {$rows.0}`) continue }
+    
+    // GUID nodes may be constructed in a replay-safe way by
+    // specifying a list of items to generate a hash from
+    [ auth:creds=($email, $passwd) :email=$email :passwd=$passwd <(refs)+ {[ file:bytes=<SHA256 of cred dump file> ]}] 
+    
+}
